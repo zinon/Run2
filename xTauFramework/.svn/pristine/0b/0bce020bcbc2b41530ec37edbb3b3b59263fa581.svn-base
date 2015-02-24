@@ -1,0 +1,642 @@
+
+104  //histogram fill                                                                                                                                                            
+105  /*  void FillH1(const std::string &,const std::string &,double );                                                                                                           
+106  void FillH1w(const std::string &,const std::string &, double);                                                                                                              
+107  void FillH1(const std::string &,const std::string &, double, double);                                                                                                       
+108                                                                                                                                                                              
+109  void FillH2(const std::string &, const std::string &, double, double);                                                                                                      
+110  void FillH2w(const std::string &, const std::string &, double, double);                                                                                                     
+111  void FillH2(const std::string &, const std::string &, double, double,  double);                                                                                             
+112                                                                                                                                                                              
+113                                                                                                                                                                              
+114  //fill tree helper function                                                                                                                                                 
+115  void FillTreeVar(const std::string &, const double);                                                                                                                        
+116  */
+
+
+
+    //===============
+    // Fill Channel ||
+    //===============
+
+    //todo: insert the following part in templates and fill each block on request via JOs
+
+    //clean tree variables
+    /*    for( auto &var : m_tree_var)
+      var.second = 0;
+
+    //event weights
+    FillTreeVar("weight_mc", m_mcw);
+    FillTreeVar("weight_pileup", m_puw);
+    FillTreeVar("weight_total", m_evtw);
+
+
+    //event
+    if(! systName.compare("NOMINAL") ){
+      FillTreeVar("actual_int_per_bunch_crossing",  eventInfo->actualInteractionsPerCrossing() );
+      FillTreeVar("average_int_per_bunch_crossing",  eventInfo->averageInteractionsPerCrossing() ); //mu
+      FillTreeVar("numPV", m_npv);
+    }
+
+    //taus
+    FillTreeVar("taus_N", m_ViewElemTauCont->size());
+    if(m_ViewElemTauCont->size() > 0){
+      FillTreeVar("leading_tau", 1);
+      FillTreeVar("leading_tau_pt",  m_ViewElemTauCont->at(0)->pt() * MeV2GeV );
+      FillTreeVar("leading_tau_eta", m_ViewElemTauCont->at(0)->eta() );
+      FillTreeVar("leading_tau_phi",  m_ViewElemTauCont->at(0)->phi() );
+      FillTreeVar("leading_tau_ntrks",  m_ViewElemTauCont->at(0)->nTracks() );
+      FillTreeVar("leading_tau_Q", m_ViewElemTauCont->at(0)->charge() );
+      FillTreeVar("leading_tau_JetBDT_score", m_ViewElemTauCont->at(0)->discriminant( xAOD::TauJetParameters::BDTJetScore ) );
+      FillTreeVar("leading_tau_JetBDT_loose", m_ViewElemTauCont->at(0)->isTau( xAOD::TauJetParameters::JetBDTSigLoose ) );
+      FillTreeVar("leading_tau_JetBDT_medium", m_ViewElemTauCont->at(0)->isTau( xAOD::TauJetParameters::JetBDTSigMedium ) );
+      FillTreeVar("leading_tau_JetBDT_tight",  m_ViewElemTauCont->at(0)->isTau( xAOD::TauJetParameters::JetBDTSigTight ) );
+      FillTreeVar("leading_tau_JetBDT_eff_sf",  m_ViewElemTauCont->at(0)->auxdata< double >( "jet_id_eff_sf" )  );
+      FillTreeVar("leading_tau_met_mt", m_t->MT( m_ViewElemTauCont->at(0), MET_Calib) );
+
+    }
+
+    if(m_ViewElemTauCont->size() > 1){
+      FillTreeVar("subleading_tau", 1);
+      FillTreeVar("subleading_tau_pt",  m_ViewElemTauCont->at(1)->pt() * MeV2GeV );
+      FillTreeVar("subleading_tau_eta", m_ViewElemTauCont->at(1)->eta() );
+      FillTreeVar("subleading_tau_phi", m_ViewElemTauCont->at(1)->phi() );
+      FillTreeVar("subleading_tau_ntrks", m_ViewElemTauCont->at(1)->nTracks() );
+      FillTreeVar("subleading_tau_Q", m_ViewElemTauCont->at(1)->charge() );
+      FillTreeVar("subleading_tau_JetBDT_score", m_ViewElemTauCont->at(1)->discriminant( xAOD::TauJetParameters::BDTJetScore ) );
+      FillTreeVar("subleading_tau_JetBDT_loose", m_ViewElemTauCont->at(1)->isTau( xAOD::TauJetParameters::JetBDTSigLoose ) );
+      FillTreeVar("subleading_tau_JetBDT_medium", m_ViewElemTauCont->at(1)->isTau( xAOD::TauJetParameters::JetBDTSigMedium ) );
+      FillTreeVar("subleading_tau_JetBDT_tight",  m_ViewElemTauCont->at(1)->isTau( xAOD::TauJetParameters::JetBDTSigTight ) );
+      FillTreeVar("subleading_tau_JetBDT_eff_sf", m_ViewElemTauCont->at(1)->auxdata< double >( "jet_id_eff_sf" )  );
+    }
+
+    //muons
+    FillTreeVar("muons_N", m_ViewElemMuonCont->size());
+
+    if(m_ViewElemMuonCont->size() > 0){
+      FillTreeVar("leading_muon", 1);
+      FillTreeVar("leading_muon_pt",  m_ViewElemMuonCont->at(0)->pt() * MeV2GeV );
+      FillTreeVar("leading_muon_eta", m_ViewElemMuonCont->at(0)->eta() );
+      FillTreeVar("leading_muon_phi", m_ViewElemMuonCont->at(0)->phi() );
+      FillTreeVar("leading_muon_Q",  m_ViewElemMuonCont->at(0)->charge() );
+      FillTreeVar("leading_muon_eff_sf",  m_ViewElemMuonCont->at(0)->auxdata< float >( "eff_sf" )  );
+      FillTreeVar("leading_muon_met_mt", m_t->MT( m_ViewElemMuonCont->at(0), MET_Calib) );
+    }
+    if(m_ViewElemMuonCont->size() > 1){
+      FillTreeVar("subleading_muon", 1);
+      FillTreeVar("subleading_muon_pt",  m_ViewElemMuonCont->at(1)->pt() * MeV2GeV);
+      FillTreeVar("subleading_muon_eta", m_ViewElemMuonCont->at(1)->eta() );
+      FillTreeVar("subleading_muon_phi", m_ViewElemMuonCont->at(1)->phi() );
+      FillTreeVar("subleading_muon_Q", m_ViewElemMuonCont->at(1)->charge() );
+      FillTreeVar("subleading_muon_eff_sf",  m_ViewElemMuonCont->at(1)->auxdata< float >( "eff_sf" )  );
+    }
+
+    //jets
+    FillTreeVar("jets_N", m_ViewElemJetCont->size());
+
+    if(m_ViewElemJetCont->size() > 0){
+      FillTreeVar("leading_jet", 1);
+      FillTreeVar("leading_jet_pt",  m_ViewElemJetCont->at(0)->pt() * MeV2GeV );
+      FillTreeVar("leading_jet_eta", m_ViewElemJetCont->at(0)->eta() );
+      FillTreeVar("leading_jet_phi", m_ViewElemJetCont->at(0)->phi() );
+      FillTreeVar("leading_jet_y", m_ViewElemJetCont->at(0)->rapidity() );
+      float jetvf  = (m_ViewElemJetCont->at(0)->auxdata< std::vector<float> >( "JVF" )).at(0);
+      FillTreeVar("leading_jet_jvf", jetvf);
+    }
+
+    if(m_ViewElemJetCont->size() > 1){
+      FillTreeVar("subleading_jet", 1);
+      FillTreeVar("subleading_jet_pt",  m_ViewElemJetCont->at(1)->pt() * MeV2GeV );
+      FillTreeVar("subleading_jet_eta", m_ViewElemJetCont->at(1)->eta() );
+      FillTreeVar("subleading_jet_phi", m_ViewElemJetCont->at(1)->phi() );
+      FillTreeVar("subleading_jet_y", m_ViewElemJetCont->at(1)->rapidity() );
+      float jetvf  = (m_ViewElemJetCont->at(1)->auxdata< std::vector<float> >( "JVF" )).at(0);
+      FillTreeVar("subleading_jet_jvf", jetvf);
+    }
+
+    //met
+    FillTreeVar("met_et", MET_Calib->met() * MeV2GeV );
+    FillTreeVar("met_phi", MET_Calib->phi() );
+    FillTreeVar("met_sumet", MET_Calib->sumet() * MeV2GeV );
+
+    // tau muon system
+    if(m_ViewElemTauCont->size() > 0 && m_ViewElemMuonCont->size() > 0){
+      FillTreeVar("tau_muon", 1. );
+      FillTreeVar("tau_muon_deta", m_t->DeltaEta(m_ViewElemTauCont.get(), m_ViewElemMuonCont.get()) );
+      FillTreeVar("tau_muon_dphi", m_t->DeltaPhi(m_ViewElemTauCont.get(), m_ViewElemMuonCont.get()) );
+      FillTreeVar("tau_muon_dR", m_t->DeltaR(m_ViewElemTauCont.get(), m_ViewElemMuonCont.get()) );
+      FillTreeVar("tau_muon_cosalpha", m_t->CosAlpha(m_ViewElemTauCont.get(), m_ViewElemMuonCont.get()) );
+      FillTreeVar("tau_muon_qxq", m_ViewElemTauCont->at(0)->charge() * m_ViewElemMuonCont->at(0)->charge() );
+      FillTreeVar("tau_muon_m_vis", m_t->MassVisible(m_ViewElemTauCont.get(), m_ViewElemMuonCont.get()) * MeV2GeV);
+      FillTreeVar("tau_muon_vect_sum_pt", m_t->VectorSumPt(m_ViewElemTauCont.get(), m_ViewElemMuonCont.get()) * MeV2GeV );
+      FillTreeVar("tau_muon_scal_sum_pt", m_t->ScalarSumPt(m_ViewElemTauCont.get(), m_ViewElemMuonCont.get()) * MeV2GeV);
+      FillTreeVar("tau_muon_met_bisect", m_t->METbisect(m_ViewElemTauCont.get(), 0, m_ViewElemMuonCont.get(), 0, MET_Calib) );
+      FillTreeVar("tau_muon_met_min_dphi", m_t->METmindeltaphi(m_ViewElemTauCont.get(), m_ViewElemMuonCont.get(), MET_Calib) );
+      FillTreeVar("tau_muon_met_centrality", m_t->METcentrality(m_ViewElemTauCont.get(), m_ViewElemMuonCont.get(), MET_Calib) );
+      double x1_col; double x2_col; double m_col; bool ok_col = m_t->MassCollinear(m_ViewElemTauCont.get(), m_ViewElemMuonCont.get(), MET_Calib, true, m_col, x1_col, x2_col) ;
+      FillTreeVar("tau_muon_col", ok_col);
+      FillTreeVar("tau_muon_m_col", m_col * MeV2GeV);
+      FillTreeVar("tau_muon_x1_col", x1_col);
+      FillTreeVar("tau_muon_x2_col", x2_col);
+
+    }
+
+    // DAN tau electron system
+    if(m_ViewElemTauCont->size() > 0 && m_ViewElemEleCont->size() > 0){
+      FillTreeVar("tau_electron", 1. );
+      FillTreeVar("tau_electron_deta", m_t->DeltaEta(m_ViewElemTauCont.get(), 0, m_ViewElemEleCont.get(), 0) );
+      FillTreeVar("tau_electron_dphi", m_t->DeltaPhi(m_ViewElemTauCont.get(), 0, m_ViewElemEleCont.get(), 0) );
+      FillTreeVar("tau_electron_dR", m_t->DeltaR(m_ViewElemTauCont.get(), 0, m_ViewElemEleCont.get(), 0) );
+      FillTreeVar("tau_electron_cosalpha", m_t->CosAlpha(m_ViewElemTauCont.get(), 0, m_ViewElemEleCont.get(), 0) );
+      FillTreeVar("tau_electron_qxq", m_ViewElemTauCont->at(0)->charge() * m_ViewElemEleCont->at(0)->charge() );
+      FillTreeVar("tau_electron_m_vis", m_t->MassVisible(m_ViewElemTauCont.get(), 0, m_ViewElemEleCont.get(), 0) * MeV2GeV);
+      FillTreeVar("tau_electron_vect_sum_pt", m_t->VectorSumPt(m_ViewElemTauCont.get(), 0, m_ViewElemEleCont.get(), 0) * MeV2GeV );
+      FillTreeVar("tau_electron_scal_sum_pt", m_t->ScalarSumPt(m_ViewElemTauCont.get(), 0, m_ViewElemEleCont.get(), 0) * MeV2GeV);
+      FillTreeVar("tau_electron_met_bisect", m_t->METbisect(m_ViewElemTauCont.get(), 0, m_ViewElemEleCont.get(), 0, MET_Calib) );
+      FillTreeVar("tau_electron_met_min_dphi", m_t->METmindeltaphi(m_ViewElemTauCont.get(), 0, m_ViewElemEleCont.get(), 0, MET_Calib) );
+      FillTreeVar("tau_electron_met_centrality", m_t->METcentrality(m_ViewElemTauCont.get(), 0, m_ViewElemEleCont.get(), 0, MET_Calib) );
+      double x1_col; double x2_col; double m_col; bool ok_col = m_t->MassCollinear(m_ViewElemTauCont.get(), 0, m_ViewElemEleCont.get(), 0, MET_Calib, true, m_col, x1_col, x2_col) ;
+      FillTreeVar("tau_electron_col", ok_col);
+      FillTreeVar("tau_electron_m_col", m_col * MeV2GeV);
+      FillTreeVar("tau_electron_x1_col", x1_col);
+      FillTreeVar("tau_electron_x2_col", x2_col);
+
+    }
+
+    if(m_ViewElemMuonCont->size() > 0 && m_ViewElemEleCont->size() > 0){
+      FillTreeVar("muon_electron", 1. );
+      FillTreeVar("muon_electron_deta", m_t->DeltaEta(m_ViewElemMuonCont.get(), 0, m_ViewElemEleCont.get(), 0) );
+      FillTreeVar("muon_electron_dphi", m_t->DeltaPhi(m_ViewElemMuonCont.get(), 0, m_ViewElemEleCont.get(), 0) );
+      FillTreeVar("muon_electron_dR", m_t->DeltaR(m_ViewElemMuonCont.get(), 0, m_ViewElemEleCont.get(), 0) );
+      FillTreeVar("muon_electron_cosalpha", m_t->CosAlpha(m_ViewElemMuonCont.get(), 0, m_ViewElemEleCont.get(), 0) );
+      FillTreeVar("muon_electron_qxq", m_ViewElemMuonCont->at(0)->charge() * m_ViewElemEleCont->at(0)->charge() );
+      FillTreeVar("muon_electron_m_vis", m_t->MassVisible(m_ViewElemMuonCont.get(), 0, m_ViewElemEleCont.get(), 0) * MeV2GeV);
+      FillTreeVar("muon_electron_vect_sum_pt", m_t->VectorSumPt(m_ViewElemMuonCont.get(), 0, m_ViewElemEleCont.get(), 0) * MeV2GeV );
+      FillTreeVar("muon_electron_scal_sum_pt", m_t->ScalarSumPt(m_ViewElemMuonCont.get(), 0, m_ViewElemEleCont.get(), 0) * MeV2GeV);
+      FillTreeVar("muon_electron_met_bisect", m_t->METbisect(m_ViewElemMuonCont.get(), 0, m_ViewElemEleCont.get(), 0, MET_Calib) );
+      FillTreeVar("muon_electron_met_min_dphi", m_t->METmindeltaphi(m_ViewElemMuonCont.get(), 0, m_ViewElemEleCont.get(), 0, MET_Calib) );
+      FillTreeVar("muon_electron_met_centrality", m_t->METcentrality(m_ViewElemMuonCont.get(), 0, m_ViewElemEleCont.get(), 0, MET_Calib) );
+      double x1_col; double x2_col; double m_col; bool ok_col = 0; m_t->MassCollinear(m_ViewElemMuonCont.get(), 0, m_ViewElemEleCont.get(), 0, MET_Calib, true, m_col, x1_col, x2_col) ;
+      FillTreeVar("muon_electron_col", ok_col);
+      FillTreeVar("muon_electron_m_col", m_col * MeV2GeV);
+      FillTreeVar("muon_electron_x1_col", x1_col);
+      FillTreeVar("muon_electron_x2_col", x2_col);
+
+    }
+
+    // dimuon system
+    if(m_ViewElemMuonCont->size() > 1){
+      FillTreeVar("dimuon", 1. );
+      FillTreeVar("dimuon_deta", m_t->DeltaEta(m_ViewElemMuonCont.get()) );
+      FillTreeVar("dimuon_dphi", m_t->DeltaPhi(m_ViewElemMuonCont.get()) );
+      FillTreeVar("dimuon_dR", m_t->DeltaR(m_ViewElemMuonCont.get()) );
+      FillTreeVar("dimuon_cosalpha", m_t->CosAlpha(m_ViewElemMuonCont.get()) );
+      FillTreeVar("dimuon_qxq", m_ViewElemMuonCont->at(0)->charge() * m_ViewElemMuonCont->at(1)->charge());
+      FillTreeVar("dimuon_m_vis", m_t->MassVisible(m_ViewElemMuonCont.get()) * MeV2GeV);
+      FillTreeVar("dimuon_m_vis", m_t->MassVisible(m_ViewElemMuonCont.get()) * MeV2GeV);
+      FillTreeVar("dimuon_vect_sum_pt", m_t->VectorSumPt(m_ViewElemMuonCont.get()) * MeV2GeV );
+      FillTreeVar("dimuon_scal_sum_pt", m_t->ScalarSumPt(m_ViewElemMuonCont.get()) * MeV2GeV);
+      FillTreeVar("dimuon_met_bisect", m_t->METbisect(m_ViewElemMuonCont.get(), MET_Calib) );
+      FillTreeVar("dimuon_met_min_dphi", m_t->METmindeltaphi(m_ViewElemMuonCont.get(), MET_Calib) );
+      FillTreeVar("dimuon_met_centrality", m_t->METcentrality(m_ViewElemMuonCont.get(), MET_Calib) );
+      double x1_col; double x2_col; double m_col; bool ok_col = m_t->MassCollinear(m_ViewElemMuonCont.get(), MET_Calib, true, m_col, x1_col, x2_col) ;
+      FillTreeVar("dimuon_col", ok_col);
+      FillTreeVar("dimuon_m_col", m_col * MeV2GeV);
+      FillTreeVar("dimuon_x1_col", x1_col);
+      FillTreeVar("dimuon_x2_col", x2_col);
+
+    }
+
+    // dielectron system
+    if(m_ViewElemEleCont->size() > 1){
+      FillTreeVar("dielectron", 1. );
+      FillTreeVar("dielectron_deta", m_t->DeltaEta(m_ViewElemEleCont.get()) );
+      FillTreeVar("dielectron_dphi", m_t->DeltaPhi(m_ViewElemEleCont.get()) );
+      FillTreeVar("dielectron_dR", m_t->DeltaR(m_ViewElemEleCont.get()) );
+      FillTreeVar("dielectron_cosalpha", m_t->CosAlpha(m_ViewElemEleCont.get()) );
+      FillTreeVar("dielectron_qxq", m_ViewElemEleCont->at(0)->charge() * m_ViewElemEleCont->at(1)->charge());
+      FillTreeVar("dielectron_m_vis", m_t->MassVisible(m_ViewElemEleCont.get()) * MeV2GeV);
+      FillTreeVar("dielectron_vect_sum_pt", m_t->VectorSumPt(m_ViewElemEleCont.get()) * MeV2GeV );
+      FillTreeVar("dielectron_scal_sum_pt", m_t->ScalarSumPt(m_ViewElemEleCont.get()) * MeV2GeV);
+      FillTreeVar("dielectron_met_bisect", m_t->METbisect(m_ViewElemEleCont.get(), MET_Calib) );
+      FillTreeVar("dielectron_met_min_dphi", m_t->METmindeltaphi(m_ViewElemEleCont.get(), MET_Calib) );
+      FillTreeVar("dielectron_met_centrality", m_t->METcentrality(m_ViewElemEleCont.get(), MET_Calib) );
+      double x1_col; double x2_col; double m_col; bool ok_col = m_t->MassCollinear(m_ViewElemEleCont.get(), MET_Calib, true, m_col, x1_col, x2_col) ;
+      FillTreeVar("dielectron_col", ok_col);
+      FillTreeVar("dielectron_m_col", m_col * MeV2GeV);
+      FillTreeVar("dielectron_x1_col", x1_col);
+      FillTreeVar("dielectron_x2_col", x2_col);
+    }
+
+    // ditau system
+    if(m_ViewElemTauCont->size() > 1){
+      FillTreeVar("ditau", 1. );
+      FillTreeVar("ditau_deta", m_t->DeltaEta(m_ViewElemTauCont.get()) );
+      FillTreeVar("ditau_dphi", m_t->DeltaPhi(m_ViewElemTauCont.get()) );
+      FillTreeVar("ditau_dR", m_t->DeltaR(m_ViewElemTauCont.get()) );
+      FillTreeVar("ditau_cosalpha", m_t->CosAlpha(m_ViewElemTauCont.get()) );
+      FillTreeVar("ditau_qxq", m_ViewElemTauCont->at(0)->charge() * m_ViewElemTauCont->at(1)->charge());
+      FillTreeVar("ditau_m_vis", m_t->MassVisible(m_ViewElemTauCont.get()) * MeV2GeV);
+      FillTreeVar("ditau_vect_sum_pt", m_t->VectorSumPt(m_ViewElemTauCont.get()) * MeV2GeV );
+      FillTreeVar("ditau_scal_sum_pt", m_t->ScalarSumPt(m_ViewElemTauCont.get()) * MeV2GeV);
+      FillTreeVar("ditau_met_bisect", m_t->METbisect(m_ViewElemTauCont.get(), MET_Calib) );
+      FillTreeVar("ditau_met_min_dphi", m_t->METmindeltaphi(m_ViewElemTauCont.get(), MET_Calib) );
+      FillTreeVar("ditau_met_centrality", m_t->METcentrality(m_ViewElemTauCont.get(), MET_Calib) );
+      double x1_col; double x2_col; double m_col; bool ok_col = m_t->MassCollinear(m_ViewElemTauCont.get(), MET_Calib, true, m_col, x1_col, x2_col) ;
+      FillTreeVar("ditau_col", ok_col);
+      FillTreeVar("ditau_m_col", m_col * MeV2GeV);
+      FillTreeVar("ditau_x1_col", x1_col);
+      FillTreeVar("ditau_x2_col", x2_col);
+
+    }
+
+    //dijet system
+    if(m_ViewElemJetCont->size() > 1){
+      FillTreeVar("dijet", 1. );
+      FillTreeVar("dijet_deta", m_t->DeltaEta(m_ViewElemJetCont.get()) );
+      FillTreeVar("dijet_dy", m_t->DeltaRapidity(m_ViewElemJetCont.get()) );
+      FillTreeVar("dijet_dphi", m_t->DeltaPhi(m_ViewElemJetCont.get()) );
+      FillTreeVar("dijet_dR", m_t->DeltaR(m_ViewElemJetCont.get()) );
+      FillTreeVar("dijet_cosalpha", m_t->CosAlpha(m_ViewElemJetCont.get()) );
+      FillTreeVar("dijet_m_vis", m_t->MassVisible(m_ViewElemJetCont.get()) * MeV2GeV);
+      FillTreeVar("dijet_vect_sum_pt", m_t->VectorSumPt(m_ViewElemJetCont.get()) * MeV2GeV);
+      FillTreeVar("dijet_scal_sum_pt", m_t->ScalarSumPt(m_ViewElemJetCont.get()) * MeV2GeV);
+      FillTreeVar("dijet_etaxeta", m_ViewElemJetCont->at(0)->eta() * m_ViewElemJetCont->at(1)->eta());
+
+    }
+
+    //fill tree
+    if ( m_Tree.find(systName) != m_Tree.end() )
+      m_Tree[systName]->Fill();
+    else
+      Error("execute()", "Cannot fill tree with name '%s'", systName.c_str());
+    */
+
+    //##################################################### FillHistos ############################################################
+
+    //this is Messy section, used for debugging essentially - we should tidy up everything below
+    /*
+    //upon request
+    if(m_jo->get<bool>(xJobOptions::DO_HISTOS)){
+      //---> Event info
+      FillH1("event_weight",systname, m_evtw);
+      FillH1("pileup_weight", systname, m_puw);
+      FillH1("actual_int_per_bunch_crossing", systname, eventInfo->actualInteractionsPerCrossing(), m_evtw);
+      FillH1("average_int_per_bunch_crossing", systname, eventInfo->averageInteractionsPerCrossing(), m_evtw); //mu
+
+      //---> Taus
+      FillH1("tau_n",systname, m_ViewElemTauCont->size(), m_evtw );
+      FillH1("tau_n_all", systname, (TauJetCont)->size(), m_evtw );
+
+
+      for (auto itr = m_ViewElemTauCont->begin(); itr != m_ViewElemTauCont->end(); ++itr){
+
+        //if(debug) std::cout<<(*itr)->pt()<<std::endl;
+
+        FillH1("tau_pt"       ,systname,(*itr)->pt()*MeV2GeV , m_evtw);
+        FillH1("tau_eta"      ,systname,(*itr)->eta() , m_evtw);
+        FillH1("tau_phi"      ,systname,(*itr)->phi() , m_evtw);
+        //FillH1("tau_E"        ,(*itr)->E() , m_evtw);
+        FillH2("tau_SF_eff_vs_pt", systname, (*itr)->pt()*MeV2GeV,(*itr)->auxdata< double >( "tau_SF_eff" ), m_evtw);
+      }
+
+      if(m_ViewElemTauCont->size()>0) FillH1("tau_pt_0"        ,systname,(*m_ViewElemTauCont)[0]->pt()*MeV2GeV , m_evtw);
+      if(m_ViewElemTauCont->size()>1) FillH1("tau_pt_1"      ,systname,(*m_ViewElemTauCont)[1]->pt()*MeV2GeV , m_evtw);
+
+      if(m_ViewElemTauCont->size()>0) FillH1("tau_eta_0"       ,systname,(*m_ViewElemTauCont)[0]->eta() , m_evtw);
+      if(m_ViewElemTauCont->size()>1) FillH1("tau_eta_1"     ,systname,(*m_ViewElemTauCont)[1]->eta() , m_evtw);
+
+
+      //---> Muons
+      FillH1("muon_n",systname, m_ViewElemMuonCont->size(), m_evtw );
+      FillH1("muon_n_all", systname, (MuonCont)->size(), m_evtw );
+
+      for (auto itr = m_ViewElemMuonCont->begin(); itr != m_ViewElemMuonCont->end(); ++itr){
+        FillH1("muon_pt"       ,systname,(*itr)->pt()*MeV2GeV , m_evtw);
+        FillH1("muon_eta"      ,systname,(*itr)->eta() , m_evtw);
+        FillH1("muon_phi"      ,systname,(*itr)->phi() , m_evtw);
+        //    FillH1("muon_iso"      ,systname,(*itr)->isolation() , m_evtw);
+
+      }
+
+      if(m_ViewElemMuonCont->size() > 0) FillH1("muon_pt_0"       ,systname,(*m_ViewElemMuonCont)[0]->pt()*MeV2GeV , m_evtw);
+      if(m_ViewElemMuonCont->size() > 0) FillH1("muon_eta_0"       ,systname,(*m_ViewElemMuonCont)[0]->pt()*MeV2GeV , m_evtw);
+
+      if(m_ViewElemMuonCont->size() > 1) FillH1("muon_pt_1"       ,systname,(*m_ViewElemMuonCont)[1]->pt()*MeV2GeV , m_evtw);
+      if(m_ViewElemMuonCont->size() > 1) FillH1("muon_eta_1"       ,systname,(*m_ViewElemMuonCont)[1]->pt()*MeV2GeV , m_evtw);
+      if(m_ViewElemMuonCont->size() > 1) FillH1("muons_mll_0_1"       ,systname,m_t->MassVisible(m_ViewElemMuonCont.get(),0,m_ViewElemMuonCont.get(),1)*MeV2GeV, m_evtw);
+      if(m_ViewElemMuonCont->size() > 1 && fabs(m_t->MassVisible(m_ViewElemMuonCont.get(),0,m_ViewElemMuonCont.get(),1)*MeV2GeV-91.)<20. )
+        FillH1("muons_met_zpeak",systname , MET_Calib->met() * MeV2GeV, m_evtw);
+
+      //---> Jets
+
+      FillH1("jet_n", systname, m_ViewElemJetCont->size(), m_evtw );
+      FillH1("jet_n_all", systname, JetCont->size(), m_evtw );
+
+      for (auto itr = m_ViewElemJetCont->begin(); itr != m_ViewElemJetCont->end(); ++itr){
+
+        //if(debug) std::cout<<(*itr)->pt()<<std::endl;
+
+        FillH1("jet_pt"       ,systname,(*itr)->pt()*MeV2GeV , m_evtw);
+        FillH1("jet_eta"      ,systname,(*itr)->eta() , m_evtw);
+        FillH1("jet_phi"      ,systname,(*itr)->phi() , m_evtw);
+        //FillH1("jet_E"        ,(*itr)->E() , m_evtw);
+        FillH1("jet_JERes"    ,systname,(*itr)->auxdata< double >("jet_JERes") , m_evtw);
+        FillH1("jet_CalibSF"  ,systname,(*itr)->auxdata< double >("jet_CalibSF"), m_evtw);
+      }
+
+      if(m_ViewElemJetCont->size()>0) FillH1("jet_pt_0"       ,systname,(*m_ViewElemJetCont)[0]->pt()*MeV2GeV , m_evtw);
+      if(m_ViewElemJetCont->size()>1) FillH1("jet_pt_1"     ,systname,(*m_ViewElemJetCont)[1]->pt()*MeV2GeV , m_evtw);
+
+      if(m_ViewElemJetCont->size()>0) FillH1("jet_eta_0"      ,systname,(*m_ViewElemJetCont)[0]->eta() , m_evtw);
+      if(m_ViewElemJetCont->size()>1) FillH1("jet_eta_1"    ,systname,(*m_ViewElemJetCont)[1]->eta() , m_evtw);
+
+
+      if(m_ViewElemJetCont->size()>1) FillH1("jet_rapgap"  ,systname, m_t->DeltaEta((*m_ViewElemJetCont)[0],(*m_ViewElemJetCont)[1]) , m_evtw);
+      //if(m_ViewElemJetCont->size()>1) FillH1("jet_rapgap"  , m_t->DeltaEta(m_ViewElemJetCont , m_evtw);
+
+
+      //---> MET
+
+      FillH1("met_et", systname, MET->met()*MeV2GeV, m_evtw);
+      FillH1("met_softTerm_et", systname, MET_SoftTerm->met()*MeV2GeV, m_evtw);
+      FillH1("met_jetTerm_et", systname, MET_JetTerm->met()*MeV2GeV, m_evtw);
+      FillH1("met_tauTerm_et", systname, MET_TauTerm->met()*MeV2GeV, m_evtw);
+      FillH1("met_muonTerm_et", systname, MET_MuonTerm->met()*MeV2GeV, m_evtw);
+      FillH1("met_eleTerm_et", systname, MET_EleTerm->met()*MeV2GeV, m_evtw);
+
+      FillH1("met_calib_et", systname, MET_Calib->met()*MeV2GeV, m_evtw);
+      FillH1("met_calib_softTerm_et", systname, MET_Calib_SoftTerm->met()*MeV2GeV, m_evtw);
+      FillH1("met_calib_jetTerm_et", systname, MET_Calib_JetTerm->met()*MeV2GeV, m_evtw);
+      FillH1("met_calib_tauTerm_et", systname, MET_Calib_TauTerm->met()*MeV2GeV, m_evtw);
+      FillH1("met_calib_muonTerm_et", systname, MET_Calib_MuonTerm->met()*MeV2GeV, m_evtw);
+      FillH1("met_calib_eleTerm_et", systname, MET_Calib_EleTerm->met()*MeV2GeV, m_evtw);
+
+      FillH1("met_det", systname, (MET->met()-MET_Calib->met())*MeV2GeV, m_evtw);
+      FillH1("met_softTerm_det", systname, (MET_SoftTerm->met()-MET_Calib_SoftTerm->met())*MeV2GeV, m_evtw);
+      FillH1("met_jetTerm_det", systname, (MET_JetTerm->met()-MET_Calib_JetTerm->met())*MeV2GeV, m_evtw);
+      FillH1("met_tauTerm_det", systname, (MET_TauTerm->met()-MET_Calib_TauTerm->met())*MeV2GeV, m_evtw);
+      FillH1("met_muonTerm_det", systname, (MET_MuonTerm->met()-MET_Calib_MuonTerm->met())*MeV2GeV, m_evtw);
+      FillH1("met_eleTerm_det", systname, (MET_EleTerm->met()-MET_Calib_EleTerm->met())*MeV2GeV, m_evtw);
+
+    }
+    */
+
+
+
+//IN INITIALIZE
+
+  //must-have for derivations
+  if( m_jo->get<bool>(xJobOptions::DO_DERIVATION) ){
+    m_H1["weight_mc_samplesum"] = new TH1D("weight_mc_samplesum", "weight_mc_samplesum", 4, -0.5, 3.5);
+  }
+
+  //upon request
+  if(m_jo->get<bool>(xJobOptions::DO_HISTOS)){
+    int N_int_pbc = 100; double x_int_pbc = 0; double y_int_pbc = 100;
+    int N_pu_w = 2; double x_pu_w = 0; double y_pu_w = 200;
+
+    m_H1["event_weight"] = new TH1D("event_weight","event_weight", 200, -10, 10);
+    m_H1["actual_int_per_bunch_crossing"] = new TH1D("actual_int_per_bunch_crossing", "", N_int_pbc, x_int_pbc, y_int_pbc);
+    m_H1["average_int_per_bunch_crossing"] = new TH1D("average_int_per_bunch_crossing", "", N_int_pbc, x_int_pbc, y_int_pbc);
+    m_H1["pileup_weight"] = new TH1D("pileup_weight", "pileup_weight", N_pu_w, x_pu_w, y_pu_w);
+
+    //MET related histos
+
+
+    int N_met_pt = 100; double x_met_pt = 0; double y_met_pt = 250;
+
+    m_H1["met_etsum"] = new TH1D("met_etsum", "", N_met_pt, x_met_pt, y_met_pt);
+    m_H1["met_et"] = new TH1D("met_et", "", N_met_pt, x_met_pt, y_met_pt);
+
+    m_H1["met_softTerm_et"] = new TH1D("met_softTerm_et", "", N_met_pt, x_met_pt, y_met_pt);
+    m_H1["met_jetTerm_et"] = new TH1D("met_jetTerm_et", "", N_met_pt, x_met_pt, y_met_pt);
+    m_H1["met_tauTerm_et"] = new TH1D("met_tauTerm_et", "", N_met_pt, x_met_pt, y_met_pt);
+    m_H1["met_muonTerm_et"] = new TH1D("met_muonTerm_et", "", N_met_pt, x_met_pt, y_met_pt);
+    m_H1["met_eleTerm_et"] = new TH1D("met_eleTerm_et", "", N_met_pt, x_met_pt, y_met_pt);
+
+    m_H1["met_calib_etsum"] = new TH1D("met_calib_etsum", "", N_met_pt, x_met_pt, y_met_pt);
+    m_H1["met_calib_et"] = new TH1D("met_calib_et", "", N_met_pt, x_met_pt, y_met_pt);
+
+    m_H1["met_calib_softTerm_et"] = new TH1D("met_calib_softTerm_et", "", N_met_pt, x_met_pt, y_met_pt);
+    m_H1["met_calib_jetTerm_et"] = new TH1D("met_calib_jetTerm_et", "", N_met_pt, x_met_pt, y_met_pt);
+    m_H1["met_calib_tauTerm_et"] = new TH1D("met_calib_tauTerm_et", "", N_met_pt, x_met_pt, y_met_pt);
+    m_H1["met_calib_muonTerm_et"] = new TH1D("met_calib_muonTerm_et", "", N_met_pt, x_met_pt, y_met_pt);
+    m_H1["met_calib_eleTerm_et"] = new TH1D("met_calib_eleTerm_et", "", N_met_pt, x_met_pt, y_met_pt);
+
+
+    m_H1["met_det"] = new TH1D("met_det", "", 101, -10.5, 10.5);
+    m_H1["met_softTerm_det"] = new TH1D("met_softTerm_det", "", 101, -10.5, 10.5);
+    m_H1["met_jetTerm_det"] = new TH1D("met_jetTerm_det", "", 101, -10.5, 10.5);
+    m_H1["met_tauTerm_det"] = new TH1D("met_tauTerm_det", "", 101, -10.5, 10.5);
+    m_H1["met_muonTerm_det"] = new TH1D("met_muonTerm_det", "", 101, -10.5, 10.5);
+    m_H1["met_eleTerm_det"] = new TH1D("met_eleTerm_det", "", 101, -10.5, 10.5);
+
+    //jet object related histograms
+    int N_jet_pt = 100; double x_jet_pt = 0; double y_jet_pt = 250;
+    int N_jet_eta = 100; double x_jet_eta = -5; double y_jet_eta = 5;
+    int N_jet_phi = 100; double x_jet_phi = -3.5; double y_jet_phi = 3.5;
+    int N_jet_E = 100; double x_jet_E = 0; double y_jet_E = 500;
+    int N_jet_JERes = 200; double x_jet_JERes = 0; double y_jet_JERes = 2.;
+    int N_jet_SF = 100; double x_jet_SF = 0; double y_jet_SF= 10;
+    int N_jet_n = 11; double x_jet_n = -0.5; double y_jet_n = 10.5;
+
+    m_H1["jet_pt"] = new TH1D("jet_pt", "", N_jet_pt, x_jet_pt, y_jet_pt);
+    m_H1["jet_pt_0"] = new TH1D("jet_pt_0", "", N_jet_pt, x_jet_pt, y_jet_pt);
+    m_H1["jet_pt_1"] = new TH1D("jet_pt_1", "", N_jet_pt, x_jet_pt, y_jet_pt);
+
+    m_H1["jet_eta"] = new TH1D("jet_eta", "", N_jet_eta, x_jet_eta, y_jet_eta);
+    m_H1["jet_eta_0"] = new TH1D("jet_eta_0", "", N_jet_eta, x_jet_eta, y_jet_eta);
+    m_H1["jet_eta_1"] = new TH1D("jet_eta_1", "", N_jet_eta, x_jet_eta, y_jet_eta);
+
+    m_H1["jet_phi"] = new TH1D("jet_phi", "", N_jet_phi, x_jet_phi, y_jet_phi);
+
+    m_H1["jet_E"] = new TH1D("jet_E", "", N_jet_E, x_jet_E, y_jet_E);
+
+    m_H1["jet_JERes"] = new TH1D("jet_JERes", "", N_jet_JERes, x_jet_JERes, y_jet_JERes);
+    m_H1["jet_CalibSF"] = new TH1D("jet_CalibSF", "", N_jet_SF, x_jet_SF, y_jet_SF);
+
+    m_H1["jet_n"] = new TH1D("jet_n", "", N_jet_n, x_jet_n, y_jet_n);
+    m_H1["jet_n_all"] = new TH1D("jet_n_all", "", N_jet_n, x_jet_n, y_jet_n);
+
+    //muon object related histograms
+    int N_muon_pt = 100; double x_muon_pt = 0; double y_muon_pt = 100;
+    int N_muon_eta = 100; double x_muon_eta = -5; double y_muon_eta = 5;
+    int N_muon_phi = 70; double x_muon_phi = -3.5; double y_muon_phi = 3.5;
+    int N_muon_n = 11; double x_muon_n = -0.5; double y_muon_n = 10.5;
+    int N_muon_mll = 60; double x_muon_mll = 0; double y_muon_mll = 120;
+
+
+    m_H1["muon_n"] = new TH1D("muon_n", "", N_muon_n, x_muon_n, y_muon_n);
+    m_H1["muon_n_all"] = new TH1D("muon_n_all", "", N_muon_n, x_muon_n, y_muon_n);
+
+    m_H1["muon_pt"] = new TH1D("muon_pt","" , N_muon_pt, x_muon_pt, y_muon_pt);
+    m_H1["muon_pt_0"] = new TH1D("muon_pt_0","" , N_muon_pt, x_muon_pt, y_muon_pt);
+    m_H1["muon_pt_1"] = new TH1D("muon_pt_1","" , N_muon_pt, x_muon_pt, y_muon_pt);
+
+    m_H1["muon_eta"] = new TH1D("muon_eta","" , N_muon_eta, x_muon_eta, y_muon_eta);
+    m_H1["muon_eta_0"] = new TH1D("muon_eta_0","" , N_muon_eta, x_muon_eta, y_muon_eta);
+    m_H1["muon_eta_1"] = new TH1D("muon_eta_1","" , N_muon_eta, x_muon_eta, y_muon_eta);
+
+    m_H1["muon_phi"] = new TH1D("muon_phi","" , N_muon_phi, x_muon_phi, y_muon_phi);
+
+    m_H1["muons_met_zpeak"] = new TH1D("muons_met_zpeak", "", N_met_pt, x_met_pt, y_met_pt);
+
+    m_H1["muons_mll_0_1"] = new TH1D("muons_mll_0_1", "", N_muon_mll, x_muon_mll, y_muon_mll);
+
+    //tau object related histograms
+    int N_tau_pt = 100; double x_tau_pt = 0; double y_tau_pt = 100;
+    int N_tau_eta = 100; double x_tau_eta = -5; double y_tau_eta = 5;
+    int N_tau_phi = 70; double x_tau_phi = -3.5; double y_tau_phi = 3.5;
+    int N_tau_E = 100; double x_tau_E = 0; double y_tau_E = 500;
+    int N_tau_n = 11; double x_tau_n = -0.5; double y_tau_n = 10.5;
+    int N_tau_SF = 100; double x_tau_SF = 0; double y_tau_SF = 2.;
+
+    m_H1["tau_pt"] = new TH1D("tau_pt","" , N_tau_pt, x_tau_pt, y_tau_pt);
+    m_H1["tau_pt_corrected"] = new TH1D("tau_pt_corrected", "", N_tau_pt, x_tau_pt, y_tau_pt);
+
+    m_H1["tau_pt_0"] = new TH1D("tau_pt_0", "", N_tau_pt, x_tau_pt, y_tau_pt);
+    m_H1["tau_pt_1"] = new TH1D("tau_pt_1", "", N_tau_pt, x_tau_pt, y_tau_pt);
+
+    m_H1["tau_eta"] = new TH1D("tau_eta", "", N_tau_eta, x_tau_eta, y_tau_eta);
+    m_H1["tau_eta_0"] = new TH1D("tau_eta_0", "", N_tau_eta, x_tau_eta, y_tau_eta);
+    m_H1["tau_eta_1"] = new TH1D("tau_eta_1", "", N_tau_eta, x_tau_eta, y_tau_eta);
+
+    m_H1["tau_phi"] = new TH1D("tau_phi", "", N_tau_phi, x_tau_phi, y_tau_phi);
+
+    m_H1["tau_E"] = new TH1D("tau_E", "", N_tau_E, x_tau_E, y_tau_E);
+
+    m_H1["tau_n"] = new TH1D("tau_n", "", N_tau_n, x_tau_n, y_tau_n);
+    m_H1["tau_n_all"] = new TH1D("tau_n_all", "", N_tau_n, x_tau_n, y_tau_n);
+
+    m_H1["tau_SF_eff"] = new TH1D("tau_SF_eff", "", N_tau_SF, x_tau_SF, y_tau_SF);
+    m_H2["tau_SF_eff_vs_pt"] = new TH2D("tau_SF_eff_vs_pt", "",N_tau_pt, x_tau_pt, y_tau_pt, N_tau_SF, x_tau_SF, y_tau_SF);
+
+
+    //analysis related
+
+    int N_rapgap = 80; double x_rapgap = 0; double y_rapgap = 8.;
+
+    m_H1["jet_rapgap"] = new TH1D("jet_rapgap", "", N_rapgap, x_rapgap, y_rapgap);
+
+    // Add histograms to job and set Sumw2
+    for(std::map<std::string, TH1*>::iterator H1Itr = m_H1.begin(); H1Itr != m_H1.end(); H1Itr++){
+      TH1 *h1 = H1Itr->second;
+      h1->Sumw2();
+      wk()->addOutput(h1);
+    }
+
+    Info("histInitialize()", "Number of 1D histograms booked = %lu", m_H1.size() );
+
+
+    for(std::map<std::string, TH2*>::iterator H2Itr = m_H2.begin(); H2Itr != m_H2.end(); H2Itr++){
+      TH2 *h2 = H2Itr->second;
+      h2->Sumw2();
+      wk()->addOutput(h2);
+    }
+
+    Info("histInitialize()", "Number of 2D histograms booked = %lu", m_H2.size() );
+  }//do histos
+
+
+//## Fill 2D hists
+
+void MainAnalysis::FillH1(const std::string &name,const std::string &syst, double x){
+  FillH1(name, syst, x, 1);
+}
+
+void MainAnalysis::FillH1w(const std::string &name,const std::string &syst, double x){
+  FillH1(name, syst, x, m_evtw);
+}
+
+void MainAnalysis::FillH1(const std::string &name,const std::string &syst, double x, double w ){
+  if(syst.empty()){
+    if ( m_H1.find(name) == m_H1.end() ) {
+      Error("FillH1()", "Original Histogram %s not found ...", name.c_str() );
+    }
+    else m_H1[name]->Fill(x, w);
+  }
+  else{
+    if(m_H1.find((syst+"/"+name).c_str()) == m_H1.end() ){
+      Warning("FillH1()", "Syst Histogram %s not found, creating ...", (syst+"/"+name).c_str());
+
+      m_H1[(syst+"/"+name).c_str()]=(TH1D*) m_H1[name]->Clone((syst+"/"+name).c_str());
+      m_H1[(syst+"/"+name).c_str()]->Reset();
+      wk()->addOutput(m_H1[(syst+"/"+name).c_str()]);
+      m_H1[(syst+"/"+name).c_str()]->Fill(x, w);
+    }
+    else {
+      m_H1[(syst+"/"+name).c_str()]->Fill(x, w);
+    }
+  }
+}
+
+//## Fill 2D hists
+void MainAnalysis::FillH2(const std::string &name, const std::string &syst, double x, double y){
+  FillH2(name, syst, x, y, 1.);
+}
+
+void MainAnalysis::FillH2w(const std::string &name,const std::string &syst, double x, double y){
+  FillH2(name, syst, x, y, m_evtw);
+}
+
+void MainAnalysis::FillH2(const std::string &name,const std::string &syst, double x, double y,  double w ){
+  if(syst.empty()){
+    if ( m_H2.find(name) == m_H2.end() ) {
+      Error("FillH2()", "Original Histogram %s not found ...", name.c_str() );
+    }
+    else m_H2[name]->Fill(x, y, w);
+  }
+  else{
+    if(m_H2.find((syst+"/"+name).c_str()) == m_H2.end() ){
+      Warning("FillH2()", "Syst Histogram %s not found, creating ...", (syst+"/"+name).c_str());
+
+      m_H2[(syst+"/"+name).c_str()]=(TH2D*) m_H2[name]->Clone((syst+"/"+name).c_str());
+      m_H2[(syst+"/"+name).c_str()]->Reset();
+      wk()->addOutput(m_H2[(syst+"/"+name).c_str()]);
+      m_H2[(syst+"/"+name).c_str()]->Fill(x, y, w);
+    }
+    else {
+      m_H2[(syst+"/"+name).c_str()]->Fill(x, y, w);
+    }
+  }
+}
+
+void MainAnalysis::FillTreeVar(const std::string &varname, const double varvalue){
+
+  if(m_tree_var.find(varname) != m_tree_var.end() )
+    m_tree_var[varname] = varvalue;
+  else
+    Warning("FillTreeVar()", "Cannot find variable named '%s' ", varname.c_str());
+
+}
+
+
+//IN HIST FINALIZE
+
+
+  //fill histo for sum of mc evt weight - must-have for derivations
+  if( m_jo->get<bool>(xJobOptions::DO_DERIVATION) ){
+    Info("histFinalize", "fill sum weights");
+    FillH1("weight_mc_samplesum",""  , 0 , m_initialSumOfWeights);
+    FillH1("weight_mc_samplesum", "" , 1 , m_finalSumOfWeights);
+  }
+
+  //save histograms
+  /*  int nT(0);
+  for (auto entry : m_Tree)
+    if( entry.second->GetEntries() ) nT++;
+
+
+  int nH1(0);
+  for (auto entry : m_H1)
+    if( entry.second->GetEntries() ) nH1++;
+
+  int nH2(0);
+  for (auto entry : m_H2)
+    if( entry.second->GetEntries() ) nH2++;
+
+  Info("histFinalize()", "Number of filled trees = %i", nT);
+  Info("histFinalize()", "Number of filled 1D histograms = %i", nH1);
+  Info("histFinalize()", "Number of filled 2D histograms = %i", nH2);
+  */
